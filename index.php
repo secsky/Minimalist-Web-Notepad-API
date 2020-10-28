@@ -1,6 +1,6 @@
 <?php
-$base_url = getenv('MWN_BASE_URL') ?: 'https://note.166167.xyz';
-$save_path = getenv('MWN_SAVE_PATH') ?: '_notes';
+$base_url = getenv('MWN_BASE_URL') ?: 'http://***';
+$save_path = getenv('MWN_SAVE_PATH') ?: 'note';
 header('Cache-Control: no-cache, no-store, must-revalidate');
 header('Pragma: no-cache');
 header('Expires: 0');
@@ -10,6 +10,12 @@ function save($path, $text)
 	if (!strlen($text)) {
 		unlink($path);
 	}
+	return true;
+}
+function appendsave($path, $text)
+{
+    file_put_contents($path, date('Y-m-d H:i:s'). PHP_EOL, FILE_APPEND);
+	file_put_contents($path, $text. PHP_EOL, FILE_APPEND);
 	return true;
 }
 if (isset($_GET['new'])) {
@@ -45,7 +51,7 @@ if (isset($_POST['text'])) {
 }
 if (isset($_GET['text'])) {
 	$text = $_GET['text'];
-	if (save($path, $text)) {
+	if (appendsave($path, $text)) {
 		echo("saved");
 	}
 	die;
